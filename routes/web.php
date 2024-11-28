@@ -13,7 +13,12 @@ Route::get('/trainees/create', [TrainingCenterController::class, 'createNewTrain
 
 Route::get('/trainees/{id}', [TrainingCenterController::class, 'getTraineeById'])->name('trainees.show');
 
-Route::post('/trainees', [TrainingCenterController::class, 'storeNewTrainee'])->name('trainees.store');
+Route::get('/trainees/{id}/edit', [TrainingCenterController::class, 'editExistingTraineeForm'])->name('trainees.edit');
+
+Route::post('/trainees', [TrainingCenterController::class, 'saveNewTrainee'])->name('trainees.store');
+
+Route::put('/trainees/{id}', [TrainingCenterController::class, 'updateExistingTrainee'])->name('trainees.update');
+
 
 Route::delete('/trainees/{id}', [TrainingCenterController::class, 'deleteTraineeById'])->name('trainees.destroy');
 

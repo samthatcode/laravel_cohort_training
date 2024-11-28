@@ -32,7 +32,7 @@ class TrainingCenterController extends Controller
         return view('trainees.create', ["training_centers" => $trainingCenters]);
     }
 
-    public function storeNewTrainee(Request $request)
+    public function saveNewTrainee(Request $request)
     {
         // --> /trainees/ (POST)
         // Handle POST request to store a new trainee record in table
@@ -65,22 +65,29 @@ class TrainingCenterController extends Controller
     {
         // --> /trainees/{id}/edit
         $trainee = Trainee::findOrFail($id);
+        $training_centers = TrainingCenter::all();
 
-        return view('trainees.edit', compact('trainee'));
+        return view('trainees.edit', compact('trainee', 'training_centers'));
     }
 
     public function updateExistingTrainee(Request $request, $id)
     {
         // --> PUT/PATCH /trainees/{id}
+        // Validate the incoming data
         $validatedData = $request->validate([
-            'name' => 'required',
+            'name' => 'required|string|max:255',
+            'skill' => 'required|integer|min:0|max:100',
+            'bio' => 'required|string',
             'training_center_id' => 'required|exists:training_centers,id',
-            // Add other validation rules as needed
         ]);
 
+        // Fetch the trainee using the ID
         $trainee = Trainee::findOrFail($id);
+
+        // Update the trainee's information
         $trainee->update($validatedData);
 
+        // Redirect back to a list or details page with a success message
         return redirect()->route('trainees.index')
             ->with('success', 'Trainee updated successfully.');
     }
