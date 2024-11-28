@@ -4,19 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Trainee;
+use App\Models\TrainingCenter;
 
 class TrainingCenterController extends Controller
 {
-    public function index()
+    public function getAllTrainees()
     {
         // route --> /trainees/
-        $trainees = Trainee::with('training_center')->orderBy('created_at', 'desc')->paginate(10);
+        $trainees = Trainee::with('training_center')->latest()->paginate(10); // orderBy('created_at', 'desc')
 
-        // dd($trainees);
         return view('trainees.index', ['trainees' => $trainees]);
     }
 
-    public function show($id)
+    public function getTraineeById($id)
     {
         // route --> /trainees/{id}
         $trainee = Trainee::with('training_center')->findOrFail($id);
@@ -24,59 +24,70 @@ class TrainingCenterController extends Controller
         return view('trainees.show', ['trainee' => $trainee]);
     }
 
-    public function create()
+    public function createNewTraineeForm()
     {
         // route --> /trainees/create
-        return view('trainees.create');
+        $trainingCenters = TrainingCenter::all();
+
+        return view('trainees.create', ["training_centers" => $trainingCenters]);
     }
 
-    public function store(Request $request)
+    public function saveNewTrainee(Request $request)
     {
         // --> /trainees/ (POST)
         // Handle POST request to store a new trainee record in table
         $validatedData = $request->validate([
-            'name' => 'required',
+            'name' => 'required|string|max:255',
+            'skill' => 'required|integer|min:0|max:100',
+            'bio' => 'required|string|min:20|max:100',
             'training_center_id' => 'required|exists:training_centers,id',
             // Add other validation rules as needed
         ]);
 
-        $trainee = Trainee::create($validatedData);
+        Trainee::create($validatedData);
 
         return redirect()->route('trainees.index')
             ->with('success', 'Trainee created successfully.');
     }
 
-    public function destroy($id)
+    public function deleteTraineeById($id)
     {
         // --> /trainees/{id} (DELETE)
         // Handle delete request to delete a trainee record from table
-        $trainee = Trainee::find($id);
+        $trainee = Trainee::findOrFail($id);
         $trainee->delete();
 
         return redirect()->route('trainees.index')
             ->with('success', 'Trainee deleted successfully.');
     }
 
-    public function edit($id)
+    public function editExistingTraineeForm($id)
     {
         // --> /trainees/{id}/edit
         $trainee = Trainee::findOrFail($id);
+        $training_centers = TrainingCenter::all();
 
-        return view('trainees.edit', compact('trainee'));
+        return view('trainees.edit', compact('trainee', 'training_centers'));
     }
 
-    public function update(Request $request, $id)
+    public function updateExistingTrainee(Request $request, $id)
     {
         // --> PUT/PATCH /trainees/{id}
+        // Validate the incoming data
         $validatedData = $request->validate([
-            'name' => 'required',
+            'name' => 'required|string|max:255',
+            'skill' => 'required|integer|min:0|max:100',
+            'bio' => 'required|string',
             'training_center_id' => 'required|exists:training_centers,id',
-            // Add other validation rules as needed
         ]);
 
+        // Fetch the trainee using the ID
         $trainee = Trainee::findOrFail($id);
+
+        // Update the trainee's information
         $trainee->update($validatedData);
 
+        // Redirect back to a list or details page with a success message
         return redirect()->route('trainees.index')
             ->with('success', 'Trainee updated successfully.');
     }

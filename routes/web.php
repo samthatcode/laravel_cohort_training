@@ -5,24 +5,35 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('trainees.welcome');
 
-Route::get('/trainees', [TrainingCenterController::class, 'index'])->name('trainees.index');
-Route::get('/trainees/create', [TrainingCenterController::class, 'create'])->name('trainees.create');
-Route::get('/trainees/{id}', [TrainingCenterController::class, 'show'])->name('trainees.show');
+Route::get('/trainees', [TrainingCenterController::class, 'getAllTrainees'])->name('trainees.index');
+
+Route::get('/trainees/create', [TrainingCenterController::class, 'createNewTraineeForm'])->name('trainees.create');
+
+Route::get('/trainees/{id}', [TrainingCenterController::class, 'getTraineeById'])->name('trainees.show');
+
+Route::get('/trainees/{id}/edit', [TrainingCenterController::class, 'editExistingTraineeForm'])->name('trainees.edit');
+
+Route::post('/trainees', [TrainingCenterController::class, 'saveNewTrainee'])->name('trainees.store');
+
+Route::put('/trainees/{id}', [TrainingCenterController::class, 'updateExistingTrainee'])->name('trainees.update');
+
+
+Route::delete('/trainees/{id}', [TrainingCenterController::class, 'deleteTraineeById'])->name('trainees.destroy');
 
 
 
 /*
 
-  new resource -> Dojo(s)
+  new resource -> TrainingCenter(s)
     - name, description, location
 
-  each ninja belongs to a single dojo
+  each trainee belongs to a single TrainingCenter
 
-  Ninja table
+  Trainee table
   ---------------------------------
-  id | name | bio | skill | dojo_id
+  id | name | bio | skill | training_center_id
   ---------------------------------
   01 | jack | ... | 59    | 03
   02 | jill | ... | 85    | 01
@@ -32,7 +43,7 @@ Route::get('/trainees/{id}', [TrainingCenterController::class, 'show'])->name('t
   06 | anne | ... | 55    | 01
   ---------------------------------
 
-  Dojo table
+  TrainingCenter table
   ----------------------------------
   id | name | description | location
   ----------------------------------
