@@ -7,7 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Trainee extends Model
 {
-    protected $fillable = ['name', 'skill', 'bio'];
+    protected $fillable = [
+        'name',
+        'skill',
+        'bio',
+        'training_center_id',
+    ];
 
     /** @use HasFactory<\Database\Factories\TraineeFactory> */
     use HasFactory;
