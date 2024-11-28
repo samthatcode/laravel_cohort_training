@@ -13,7 +13,11 @@
 
     <header>
         <nav>
-            <h1>Trainee Network</h1>
+            <h1>
+                <a href="{{ route('trainees.welcome') }}">
+                    Trainee Network
+                </a>
+            </h1>
             <a href="{{ route('trainees.index') }}">
                 All Trainee
             </a>

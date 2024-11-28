@@ -5,7 +5,7 @@
         @foreach ($trainees as $trainee)
             <li>
                 <div class="{{ $trainee['skill'] > 70 ? 'highlight' : '' }} card">
-                    <div>
+                    <div class="w-[70%]">
                         <h3>{{ $trainee->name }}</h3>
                         <p>{{ $trainee->training_center->name }}</p>
                     </div>
@@ -14,7 +14,7 @@
                     <a href="{{ route('trainees.show', $trainee->id) }}" class="btn">View Details</a>
 
                     <!-- Edit Button -->
-                    <a href="{{ route('trainees.edit', $trainee->id) }}" class="btn btn-edit">Edit</a>
+                    <a href="{{ route('trainees.edit', $trainee->id) }}" class="btn-edit">Edit</a>
                 </div>
             </li>
         @endforeach
