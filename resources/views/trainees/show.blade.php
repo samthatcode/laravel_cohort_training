@@ -20,7 +20,9 @@
 
 
     {{-- Delete a trainee --}}
-    <form action="{{ route('trainees.destroy', $trainee->id) }}" method="POST">
+    <form action="{{ route('trainees.destroy', $trainee->id) }}" method="POST"
+        onsubmit="return confirm('Are you sure you want to delete this trainee?');">
+
         @csrf
         @method('DELETE')
         <button type="submit" class="btn my-4">Delete Trainee</button>
