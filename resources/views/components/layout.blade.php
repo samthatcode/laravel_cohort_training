@@ -14,7 +14,7 @@
     <header>
         <nav>
             <h1>
-                <a href="{{ route('trainees.welcome') }}">
+                <a href="{{ route('trainees.home') }}">
                     Trainee Network
                 </a>
             </h1>
