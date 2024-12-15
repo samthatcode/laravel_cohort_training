@@ -4,8 +4,8 @@ use App\Http\Controllers\TrainingCenterController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
-})->name('trainees.welcome');
+    return view('home');
+})->name('trainees.home');
 
 Route::get('/trainees', [TrainingCenterController::class, 'getAllTrainees'])->name('trainees.index');
 
@@ -19,10 +19,19 @@ Route::post('/trainees', [TrainingCenterController::class, 'saveNewTrainee'])->n
 
 Route::put('/trainees/{id}', [TrainingCenterController::class, 'updateExistingTrainee'])->name('trainees.update');
 
-
 Route::delete('/trainees/{id}', [TrainingCenterController::class, 'deleteTraineeById'])->name('trainees.destroy');
 
 
+// Route prefixing
+// Route::prefix('trainees')->name('trainees.')->group(function () {
+//     Route::get('/', [TrainingCenterController::class, 'getAllTrainees'])->name('index');
+//     Route::get('/create', [TrainingCenterController::class, 'createNewTraineeForm'])->name('create');
+//     Route::get('/{id}', [TrainingCenterController::class, 'getTraineeById'])->name('show');
+//     Route::get('/{id}/edit', [TrainingCenterController::class, 'editExistingTraineeForm'])->name('edit');
+//     Route::post('/', [TrainingCenterController::class, 'saveNewTrainee'])->name('store');
+//     Route::put('/{id}', [TrainingCenterController::class, 'updateExistingTrainee'])->name('update');
+//     Route::delete('/{id}', [TrainingCenterController::class, 'deleteTraineeById'])->name('destroy');
+// });
 
 /*
 
